@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:id="@+id/backid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FEFDBF"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/menuid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Welcome to ERestaurant"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="35dp" />
+
+        <EditText
+            android:id="@+id/et_emailid"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Email"
+            android:textColor="#FF9933"
+            android:textSize="16sp"
+            android:background="#FFFFFF"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:drawablePadding="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:maxLines="1"/>
+
+
+        <EditText
+            android:id="@+id/et_passwordid"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColor="#FF9933"
+            android:textSize="16sp"
+            android:background="#FFFFFF"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:drawablePadding="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:maxLines="1"/>
+
+        <Button
+            android:id="@+id/btn_loginid"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/btn_pinid"
+            android:layout_marginTop="40dp"
+            android:paddingLeft="10dp"
+            android:text="Login"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#FF9933"/>
+
+        <Button
+            android:id="@+id/btn_Registeid"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:text="Register"
+            android:textSize="20sp"
+            android:background="#FF9933"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="#fff" />
+
+
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
