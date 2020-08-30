@@ -1,9 +1,18 @@
 package com.example.erest;
 import android.content.Intent;
+import android.view.Menu;
 import android.view.View;
 import android.widget.*;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTvTitle;
     private EditText mEtEmail;
     private EditText mEtPassword;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
         mEtEmail = findViewById(R.id.et_email);
         mEtPassword = findViewById(R.id.et_password);
 
+        //get firebase information
+        firebaseAuth = firebaseAuth.getInstance();
+
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
         //Login Button when clicked run validation method
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,13 +47,27 @@ public class MainActivity extends AppCompatActivity {
                 validate(mEtEmail.getText().toString(), mEtPassword.getText().toString());
             }
         });
+
+        //Registration Button when clicked go to registration page
+        mBtnReg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, RegistrationActivity.class));
+            }
+        });
     }
     //validation method
     private void validate (String userEmail, String userPassword) {
-        if((userEmail.equals("test@gmail.com")) && (userPassword.equals("password"))) {
-            Intent intent = new Intent(MainActivity.this,MenuActivity.class);
-            startActivity(intent);
-        }
+        firebaseAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    startActivity(new Intent(MainActivity.this, MenuActivity.class));
+                } else {
+                    Toast.makeText(MainActivity.this, "Username or Password is invalid", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 }

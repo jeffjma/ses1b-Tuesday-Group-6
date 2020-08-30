@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "657836576085",
+    "firebase_url": "https://ses1b-erestaurant.firebaseio.com",
+    "project_id": "ses1b-erestaurant",
+    "storage_bucket": "ses1b-erestaurant.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657836576085:android:0baf101754d0eef77fb3dc",
+        "android_client_info": {
+          "package_name": "com.example.erest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657836576085-6468udqu6ukguu9eubcpjan5eani4u2m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmBZJwzGLMgZfWnkvMHEg2k5vWjfN6JuE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "657836576085-6468udqu6ukguu9eubcpjan5eani4u2m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
