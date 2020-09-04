@@ -6,15 +6,17 @@ import android.view.View;
 import android.widget.*;
 import android.content.Intent;
 
+
 public class MenuActivity extends AppCompatActivity
 {
+
 
     private Button mBtnOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manu);
+        setContentView(R.layout.activity_menu);
         //button 声明
         //1. button order
         mBtnOrder = findViewById(R.id.btn_orderid);
@@ -22,7 +24,7 @@ public class MenuActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 // to order界面
-                Intent intent = new Intent(MenuActivity.this,OrderActivity.class);
+                Intent intent = new Intent(MenuActivity.this,ViewMenu.class);
                 startActivity(intent);
             }
         });
