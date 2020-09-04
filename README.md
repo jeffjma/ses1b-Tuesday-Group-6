@@ -1,4 +1,8 @@
 # eRestaurant
+Version 1.2
+- Revamped view menu screen
+- View menu screen connected to firebase database with realtime updates
+
 Version 1.1
 - Added registration screen
 - Login and Registration connected to firebase for authentication and storage of user accounts
