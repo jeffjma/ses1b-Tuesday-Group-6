@@ -15,6 +15,7 @@
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".MenuActivity" />
         <activity android:name=".OrderActivity" />
+        <activity android:name=".AdminMenu" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

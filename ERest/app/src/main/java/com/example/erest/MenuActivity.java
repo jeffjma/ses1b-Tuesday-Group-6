@@ -12,6 +12,7 @@ public class MenuActivity extends AppCompatActivity
 
 
     private Button mBtnOrder;
+    private Button mBtnMenuLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +20,20 @@ public class MenuActivity extends AppCompatActivity
         setContentView(R.layout.activity_menu);
         //button 声明
         //1. button order
-        mBtnOrder = findViewById(R.id.btn_orderid);
+        mBtnOrder = findViewById(R.id.btn_tomenu);
         mBtnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // to order界面
                 Intent intent = new Intent(MenuActivity.this,ViewMenu.class);
+                startActivity(intent);
+            }
+        });
+        mBtnMenuLogout=findViewById(R.id.btn_menulogout);
+        mBtnMenuLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuActivity.this,MainActivity.class);
                 startActivity(intent);
             }
         });

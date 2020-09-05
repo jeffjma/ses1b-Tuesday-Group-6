@@ -14,6 +14,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static android.app.ProgressDialog.show;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button mBtnLogin;
@@ -22,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText mEtEmail;
     private EditText mEtPassword;
     private FirebaseAuth firebaseAuth;
+    private String str_username;
+    private String str_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,21 @@ public class MainActivity extends AppCompatActivity {
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                validate(mEtEmail.getText().toString(), mEtPassword.getText().toString());
+                str_username = mEtEmail.getText().toString();
+                str_password = mEtPassword.getText().toString();
+
+                if ( str_username.length()<3 || !str_username.contains("@"))
+                {
+                    Toast.makeText(MainActivity.this,"e-mail incorrect",Toast.LENGTH_LONG).show();
+                }
+                else if(str_password.length()<3)
+                {
+                    Toast.makeText(MainActivity.this,"password should more than three",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    validate(str_username, str_password);
+                }
             }
         });
 
@@ -62,7 +80,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    startActivity(new Intent(MainActivity.this, MenuActivity.class));
+                    if(str_username.equals("admin@test.com") && str_password.equals("123456"))
+                    {
+                        startActivity(new Intent(MainActivity.this,AdminMenu.class));
+                    }
+                    else
+                    {
+                        startActivity(new Intent(MainActivity.this, MenuActivity.class));
+                    }
                 } else {
                     Toast.makeText(MainActivity.this, "Username or Password is invalid", Toast.LENGTH_SHORT).show();
                 }
