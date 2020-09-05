@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //customers test account
+    <varchar name="cutomers@test.com">ERest</varchar>
+    <Int name="123456">ERest</Int>
+    //staff test account
+    <varchar adminname="admin@test.com">ERest</varchar>
+    <Int name="123456">ERest</Int>
+</resources>
