@@ -1,5 +1,6 @@
 # eRestaurant
 Version 1.2
+- Add Logout and restrict customers and admin to different pages
 - Revamped view menu screen
 - View menu screen connected to firebase database with realtime updates
 
