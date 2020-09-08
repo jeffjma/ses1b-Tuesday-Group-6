@@ -13,6 +13,7 @@ public class MenuActivity extends AppCompatActivity
 
     private Button mBtnOrder;
     private Button mBtnMenuLogout;
+    private Button mBtnReservation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,14 @@ public class MenuActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        mBtnReservation=findViewById(R.id.btn_reservation);
+        mBtnReservation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuActivity.this,Reservation.class);
                 startActivity(intent);
             }
         });
