@@ -15,7 +15,7 @@
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".MenuActivity" />
         <activity android:name=".OrderActivity" />
-        <activity android:name=".Reservation" />
+        <activity android:name=".ReservationActivity" />
         <activity android:name=".AdminMenu" />
         <activity android:name=".AdminViewOrder" />
         <activity android:name=".AdminViewReservation" />
