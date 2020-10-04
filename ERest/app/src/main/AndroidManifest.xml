@@ -18,7 +18,9 @@
         <activity android:name=".ReservationActivity" />
         <activity android:name=".AdminMenu" />
         <activity android:name=".AdminViewOrder" />
+        <activity android:name=".AdminViewInvoice" />
         <activity android:name=".AdminViewReservation" />
+        <activity android:name=".AdminInvoiceDetail"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
