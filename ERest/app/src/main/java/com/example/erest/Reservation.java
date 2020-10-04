@@ -1,41 +1,36 @@
 package com.example.erest;
 
-public class Reservation {
-    String Pax;
-    String Date;
-    String Time;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.*;
+import android.content.Intent;
 
-    public Reservation(){
+public class Reservation extends AppCompatActivity {
+
+    private EditText met_description;
+    private Button mbtn_submit;
+    private String description_details;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.customer_reservation);
+
+        met_description=findViewById(R.id.et_description);
+        mbtn_submit = findViewById(R.id.btn_submit);
+        mbtn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                description_details = met_description.getText().toString();
+                Intent intent = new Intent(Reservation.this,MenuActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 
-    public Reservation(String pax, String date, String time) {
-        Pax = pax;
-        Date = date;
-        Time = time;
-    }
 
-    public String getPax() {
-        return Pax;
-    }
 
-    public void setPax(String pax) {
-        Pax = pax;
-    }
-
-    public String getDate() {
-        return Date;
-    }
-
-    public void setDate(String date) {
-        Date = date;
-    }
-
-    public String getTime() {
-        return Time;
-    }
-
-    public void setTime(String time) {
-        Time = time;
-    }
 }

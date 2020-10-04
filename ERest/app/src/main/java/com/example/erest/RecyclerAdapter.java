@@ -38,7 +38,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         //Textview
         holder.name.setText(itemList.get(position).getName());
         holder.price.setText(itemList.get(position).getPrice());
-
     }
 
     @Override
@@ -55,7 +54,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             super(itemView);
 
             name = itemView.findViewById(R.id.tv_name);
-            price = itemView.findViewById(R.id.tv_price);
+            price = itemView.findViewById(R.id.tv_email);
 
         }
     }
