@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,10 +19,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private Context mContext;
     private ArrayList<MenuItem> itemList = new ArrayList<>();
 
+    private ViewMenuInterface viewMenuInterface;
 
-    public RecyclerAdapter(Context mContext, ArrayList<MenuItem> itemList) {
+
+    public RecyclerAdapter(Context mContext, ArrayList<MenuItem> itemList, ViewMenuInterface viewMenuInterface) {
         this.mContext = mContext;
         this.itemList = itemList;
+        this.viewMenuInterface = viewMenuInterface;
     }
 
     @NonNull
@@ -29,7 +33,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item, parent, false);
-
         return new ViewHolder(view);
     }
 
@@ -50,13 +53,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         //widgets
         TextView name;
         TextView price;
+        Button order;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             name = itemView.findViewById(R.id.tv_name);
             price = itemView.findViewById(R.id.tv_price);
-
+            order = itemView.findViewById(R.id.btn_order);
+            order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewMenuInterface.onItemClick(getAdapterPosition(), name.getText().toString(), price.getText().toString());
+                    //Order newOrder = new Order();
+                    //newOrder.addToCart(name.getText().toString(), price.getText().toString());
+                }
+            });
         }
     }
 

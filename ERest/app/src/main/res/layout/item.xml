@@ -7,8 +7,8 @@
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="105dp"
-        android:layout_height="36dp"
+        android:layout_width="250dp"
+        android:layout_height="49dp"
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="5dp"
@@ -21,9 +21,9 @@
         android:id="@+id/tv_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="372dp"
+        android:layout_marginRight="372dp"
         android:text="Text"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,6 +34,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="59dp" />
+        app:layout_constraintGuide_begin="85dp" />
+
+    <Button
+        android:id="@+id/btn_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add to Order"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.944"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.135" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
