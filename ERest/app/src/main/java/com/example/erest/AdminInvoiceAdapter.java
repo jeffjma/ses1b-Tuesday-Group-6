@@ -42,6 +42,12 @@ public class AdminInvoiceAdapter extends RecyclerView.Adapter<AdminInvoiceAdapte
             holder.onClick(position);
         }
 
+       private void removeAt(int position) {
+        aitemList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, aitemList.size());
+       }
+
         @Override
         public int getItemCount()
         {
@@ -53,7 +59,8 @@ public class AdminInvoiceAdapter extends RecyclerView.Adapter<AdminInvoiceAdapte
             TextView id;
             TextView name;
             Button mbtn_detail;
-            Button mbtn_back;
+            Button mbtn_delete;
+
 
 
             public ViewHolder(@NonNull View itemView) {
@@ -62,21 +69,22 @@ public class AdminInvoiceAdapter extends RecyclerView.Adapter<AdminInvoiceAdapte
                 id = itemView.findViewById(R.id.tv_invoiceid);
                 name = itemView.findViewById(R.id.tv_invoicename);
                 mbtn_detail = itemView.findViewById(R.id.btn_invoice);
-                mbtn_back=itemView.findViewById(R.id.btn_back);
+                mbtn_delete=itemView.findViewById(R.id.btn_back);
+
 
             }
 
 
             public void onClick(final int position)
             {
-                mbtn_back.setOnClickListener(new View.OnClickListener() {
+                mbtn_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Context context=view.getContext();
-                        Intent intent=new Intent(context,AdminMenu.class);
-                        context.startActivity(intent);
+
+                            removeAt(position);
                     }
                 });
+
 
                 mbtn_detail.setOnClickListener(new View.OnClickListener() {
                     @Override

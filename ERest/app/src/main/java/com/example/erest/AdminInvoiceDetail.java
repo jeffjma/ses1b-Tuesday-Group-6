@@ -42,9 +42,17 @@ public class AdminInvoiceDetail extends AppCompatActivity {
         String foodextra=getIntent().getStringExtra("Food");
         String discountextra=getIntent().getStringExtra("Discount");
 
+        priceextra=priceextra.replaceAll("[^0-9?!\\.]","");
+        String discountextra2=discountextra.replaceAll("[^0-9?!\\.]","");
+        double discountextra3= Integer.parseInt(discountextra2);
+        double priceextra2= Integer.parseInt(priceextra);
+
+        double priceextra3=priceextra2*(100-discountextra3)/100;
+        String priceextra4= String.valueOf(priceextra3);
+
         name.setText(nameextra);
         id.setText(idextra);
-        price.setText(priceextra);
+        price.setText("$"+priceextra4);
         food.setText(foodextra);
         discount.setText(discountextra);
 

@@ -50,7 +50,8 @@ public class AdminMenu extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AdminMenu.this,AdminViewStaff.class);
-                System.out.println("TEST");
+                System.out.println("Test");
+                startActivity(intent);
             }
         });
               

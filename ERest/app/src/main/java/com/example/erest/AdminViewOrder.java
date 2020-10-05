@@ -59,9 +59,9 @@ public class AdminViewOrder extends AppCompatActivity{
                 for(DataSnapshot ds: snapshot.getChildren()){
                     AdminViewOrderItem items = new AdminViewOrderItem();
 
-                    items.setUser(ds.child("User").getValue().toString());
-                    items.setFood(ds.child("Food").getValue().toString());
-                    items.setPrice(ds.child("Price").getValue().toString());
+                    items.setUser(ds.child("user").getValue().toString());
+                    items.setFood(ds.child("food").getValue().toString());
+                    items.setPrice(ds.child("price").getValue().toString());
 
 
 

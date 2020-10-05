@@ -122,8 +122,8 @@ public class ViewMenu extends AppCompatActivity implements ViewMenuInterface{
     }
 
     @Override
-    public void onItemClick(int position, String name, String price) {
-        newOrder.addToCart(name, price);
-        Toast.makeText(ViewMenu.this, name + " added to order", Toast.LENGTH_SHORT).show();
+    public void onItemClick(int position, String Name, String Price) {
+        newOrder.addToCart(Name, Price);
+        Toast.makeText(ViewMenu.this, Name + " added to order", Toast.LENGTH_SHORT).show();
     }
 }
