@@ -12,6 +12,8 @@ public class AdminMenu extends AppCompatActivity{
     private Button mBtnAdminToOrder;
     private Button mBtnAdminToRes;
     private Button mBtnAdminToStaff;
+    private Button mBtnAdminToInvoice;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +44,21 @@ public class AdminMenu extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+
         mBtnAdminToStaff=findViewById(R.id.btn_viewstaff);
         mBtnAdminToStaff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AdminMenu.this,AdminViewStaff.class);
                 System.out.println("TEST");
+            }
+        });
+              
+        mBtnAdminToInvoice=findViewById(R.id.btn_viewinvoice);
+        mBtnAdminToInvoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminMenu.this,AdminViewInvoice.class);
                 startActivity(intent);
             }
         });
