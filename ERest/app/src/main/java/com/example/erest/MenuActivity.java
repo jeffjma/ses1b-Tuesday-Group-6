@@ -42,7 +42,7 @@ public class MenuActivity extends AppCompatActivity
         mBtnReservation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MenuActivity.this,Reservation.class);
+                Intent intent = new Intent(MenuActivity.this, ReservationActivity.class);
                 startActivity(intent);
             }
         });

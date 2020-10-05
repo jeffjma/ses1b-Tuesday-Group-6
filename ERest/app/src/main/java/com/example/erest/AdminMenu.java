@@ -18,7 +18,6 @@ public class AdminMenu extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_menu);
 
-
         mBtnAdminLogout=findViewById(R.id.btn_admlogout);
         mBtnAdminLogout.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class AdminViewStaff extends AppCompatActivity {
 
-    private static final String TAG = "viewMenu";
+    private static final String TAG = "viewStaff";
 
     RecyclerView recyclerView;
 
