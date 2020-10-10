@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
                 else
                 {
                     validate(str_username, str_password);
+                    ((eRestaurantApplication) getApplication()).setUserEmail(str_username);
+                    Toast.makeText(MainActivity.this, "Welcome " + ((eRestaurantApplication) getApplication()).getUserEmail(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

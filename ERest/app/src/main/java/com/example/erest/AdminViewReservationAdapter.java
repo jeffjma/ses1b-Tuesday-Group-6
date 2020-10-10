@@ -35,7 +35,7 @@ public class AdminViewReservationAdapter extends RecyclerView.Adapter<AdminViewR
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //Textview
-        holder.date.setText(itemList.get(position).getDate());
+        holder.name.setText(itemList.get(position).getName());
         holder.pax.setText(itemList.get(position).getPax());
         holder.time.setText(itemList.get(position).getTime());
 
@@ -48,14 +48,14 @@ public class AdminViewReservationAdapter extends RecyclerView.Adapter<AdminViewR
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         //widgets
-        TextView date;
+        TextView name;
         TextView pax;
         TextView time;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            date = itemView.findViewById(R.id.tv_date);
+            name = itemView.findViewById(R.id.tv_name);
             pax = itemView.findViewById(R.id.tv_pax);
             time = itemView.findViewById(R.id.tv_time);
 

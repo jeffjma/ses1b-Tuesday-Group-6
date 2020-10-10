@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".eRestaurantApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,7 +16,6 @@
         <activity android:name=".ViewMenu" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".MenuActivity" />
-        <activity android:name=".OrderActivity" />
         <activity android:name=".ReservationActivity" />
         <activity android:name=".AdminMenu" />
         <activity android:name=".AdminViewOrder" />
