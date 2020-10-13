@@ -2,21 +2,30 @@ package com.example.erest;
 
 import androidx.constraintlayout.widget.Placeholder;
 
+import com.bumptech.glide.provider.ResourceEncoderRegistry;
+
 import java.util.ArrayList;
 
 public class Order {
 
-    String Food, User;
+    String Food, User, Discount, Reservation;
     Double Price;
 
     public Order() {
         Food = "";
         Price = 0.00;
         User = "PlaceHolder";
+        Discount = "";
+        Reservation = "";
     }
 
     public void addToCart(String name, String priceString){
-        Food += ", " + name;
+        if(Food.isEmpty()){
+            Food = name;
+        }
+        else {
+            Food += " " + name;
+        }
         String tmpStr = priceString.substring(1);
         double price = Double.parseDouble(tmpStr);
         Price += price;
@@ -49,5 +58,13 @@ public class Order {
 
     public void setPrice(Double price) {
         Price = price;
+    }
+
+    public String getDiscount() {
+        return Discount;
+    }
+
+    public void setDiscount(String discount) {
+        Discount = discount;
     }
 }

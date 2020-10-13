@@ -12,7 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminViewStaff"></activity>
+        <activity
+            android:name=".OrderPopupActivity"
+            android:theme="@style/AppTheme.PopUp">
+        </activity>
+        <activity android:name=".AdminViewStaff" />
         <activity android:name=".ViewMenu" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".MenuActivity" />
@@ -21,7 +25,7 @@
         <activity android:name=".AdminViewOrder" />
         <activity android:name=".AdminViewInvoice" />
         <activity android:name=".AdminViewReservation" />
-        <activity android:name=".AdminInvoiceDetail"/>
+        <activity android:name=".AdminInvoiceDetail" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
