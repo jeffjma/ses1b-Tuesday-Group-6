@@ -10,7 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,9 +30,11 @@ public class AdminInvoiceDetail extends AppCompatActivity {
     TextView food;
     TextView price;
     TextView discount;
+    String discountfromdatabase;
     Button mbtnback;
     Button mbtnprint;
-
+    private DatabaseReference myRef;
+    String priceextra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,26 +45,24 @@ public class AdminInvoiceDetail extends AppCompatActivity {
         price=findViewById(R.id.pricedetails);
         food=findViewById(R.id.fooddetails);
         discount=findViewById(R.id.discountdetails);
+        myRef = FirebaseDatabase.getInstance().getReference();
 
         String nameextra=getIntent().getStringExtra("Name");
         String idextra=getIntent().getStringExtra("ID");
-        String priceextra=getIntent().getStringExtra("Price");
+        priceextra=getIntent().getStringExtra("Price");
         String foodextra=getIntent().getStringExtra("Food");
-        String discountextra=getIntent().getStringExtra("Discount");
+        //String discountextra=getIntent().getStringExtra("Discount");
 
-        priceextra=priceextra.replaceAll("[^0-9?!\\.]","");
-        String discountextra2=discountextra.replaceAll("[^0-9?!\\.]","");
-        double discountextra3= Integer.parseInt(discountextra2);
-        double priceextra2= Integer.parseInt(priceextra);
+        getData();
+        int priceextra2=Integer.parseInt(priceextra)*9/10;
+        priceextra=String.valueOf(priceextra2);
 
-        double priceextra3=priceextra2*(100-discountextra3)/100;
-        String priceextra4= String.valueOf(priceextra3);
 
         name.setText(nameextra);
         id.setText(idextra);
-        price.setText("$"+priceextra4);
+        price.setText("$"+priceextra);
         food.setText(foodextra);
-        discount.setText(discountextra);
+        //discount.setText(discountfromdatabase);
 
 
         mbtnback=findViewById(R.id.backdetails);
@@ -76,6 +84,25 @@ public class AdminInvoiceDetail extends AppCompatActivity {
         });
 
 
+    }
+
+    private void getData()
+    {
+        final Query query = myRef.child("Discounts");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds: snapshot.getChildren())
+                {
+                    discount.setText(ds.child("discount").getValue().toString());
+                    break;
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void takeScreenshot() {

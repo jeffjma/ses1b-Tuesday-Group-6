@@ -13,6 +13,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+
+import java.util.Map;
 
 import static android.app.ProgressDialog.show;
 
@@ -26,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private String str_username;
     private String str_password;
+    private DatabaseReference myRef;
+    private String target_user;
+    private String target_usertype;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
+        //get data from realtime database
+        myRef = FirebaseDatabase.getInstance().getReference();
+
         //Login Button when clicked run validation method
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +78,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    getDataFromDatabase();
                     validate(str_username, str_password);
+                    target_usertype=null;
                     ((eRestaurantApplication) getApplication()).setUserEmail(str_username);
                     Toast.makeText(MainActivity.this, "Welcome " + ((eRestaurantApplication) getApplication()).getUserEmail(), Toast.LENGTH_SHORT).show();
                 }
@@ -76,17 +95,41 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    //get data from database
+    private void getDataFromDatabase()
+    {
+        final Query query = myRef.child("Users");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds: snapshot.getChildren())
+                {
+                    if((ds.child("name").getValue().toString()).equals(str_username.split("@")[0]))
+                    {
+                        target_usertype=ds.child("usertype").getValue().toString();
+                       break;
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
     //validation method
     private void validate (String userEmail, String userPassword) {
         firebaseAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    if(str_username.equals("admin@test.com") && str_password.equals("123456"))
+                    if(target_usertype.equals("staff"))
                     {
                         startActivity(new Intent(MainActivity.this,AdminMenu.class));
                     }
-                    else
+                    else if(target_usertype.equals("customer"))
                     {
                         startActivity(new Intent(MainActivity.this, MenuActivity.class));
                     }

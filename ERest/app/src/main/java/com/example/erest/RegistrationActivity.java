@@ -50,7 +50,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()) {
-                                registerNewUser(userEmail.replace(".", "_dot_"), fName, lName);
+                                registerNewUser(userEmail.replace(".", "_dot_"), fName, lName,"customer");
                                 Toast.makeText(RegistrationActivity.this, "You have successfully Registered", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
                             }
@@ -66,9 +66,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
-    private void registerNewUser(String email, String firstName, String lastName) {
-        User newUser = new User(firstName, lastName);
-
+    private void registerNewUser(String email, String firstName, String lastName, String usertype) {
+        User newUser = new User(firstName, lastName, email.split("@")[0],usertype);
         mDatabase.child("Users").child(email).setValue(newUser);
     }
 

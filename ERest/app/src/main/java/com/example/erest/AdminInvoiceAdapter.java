@@ -95,7 +95,7 @@ public class AdminInvoiceAdapter extends RecyclerView.Adapter<AdminInvoiceAdapte
                         intent.putExtra("Name",aitemList.get(position).getName());
                         intent.putExtra("Price",aitemList.get(position).getPrice());
                         intent.putExtra("Food",aitemList.get(position).getFood());
-                        intent.putExtra("Discount",aitemList.get(position).getDiscount());
+                        //intent.putExtra("Discount",aitemList.get(position).getDiscount());
                         context.startActivity(intent);
 
                     }

@@ -76,17 +76,21 @@ public class AdminViewInvoice extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ClearAll();
+                int id=1;
                 for(DataSnapshot ds: snapshot.getChildren()){
                     AdminInvoiceItem items = new AdminInvoiceItem();
 
-                    items.setId(ds.child("id").getValue().toString());
+                    items.setId("00"+id);
                     items.setName(ds.child("user").getValue().toString());
                     items.setPrice(ds.child("price").getValue().toString());
                     items.setFood(ds.child("food").getValue().toString());
-                    items.setDiscount(ds.child("discount").getValue().toString());
+
+                    id++;
 
                     itemList.add(items);
                 }
+                //test
+
 
                 adminInvoiceAdapter = new AdminInvoiceAdapter(getApplicationContext(), itemList);
                 recyclerView.setAdapter(adminInvoiceAdapter);
