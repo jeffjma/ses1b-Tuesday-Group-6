@@ -10,7 +10,13 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,16 +31,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ReservationActivity extends AppCompatActivity{
-
+public class UpdateBookingActivity extends AppCompatActivity {
 
     int day, month, year;
+
+    private String selDate, selTime;
+    private int selPax;
 
     private Spinner pax;
     private EditText et_time;
     private EditText et_date;
     private final Calendar mCalender = Calendar.getInstance();
-    private Button mbtn_submit;
+    private Button mbtn_update, mbtn_delete;
     private String userEmail;
     private User currentUser = new User();
     private int currCapacity = 0;
@@ -42,11 +50,10 @@ public class ReservationActivity extends AppCompatActivity{
     private Date bookingDate;
     private DatabaseReference mDatabase;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.customer_reservation);
+        setContentView(R.layout.activity_update_booking);
 
         userEmail = ((eRestaurantApplication) getApplication()).getUserEmail();
 
@@ -59,7 +66,11 @@ public class ReservationActivity extends AppCompatActivity{
         et_time = findViewById(R.id.et_time_slot);
         et_time.setInputType(InputType.TYPE_NULL);
         et_date = findViewById(R.id.et_date);
-        mbtn_submit = findViewById(R.id.btn_submit);
+        mbtn_update = findViewById(R.id.btn_update_booking);
+        mbtn_delete = findViewById(R.id.btn_cancel_booking);
+        selDate = getIntent().getStringExtra("date");
+        selTime = getIntent().getStringExtra("time");
+        selPax = getIntent().getIntExtra("pax", 1);
 
         List<String> numPax = new ArrayList<String>();
         numPax.add("1");
@@ -76,27 +87,44 @@ public class ReservationActivity extends AppCompatActivity{
         ArrayAdapter<String> dataAdaptor = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, numPax);
         dataAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pax.setAdapter(dataAdaptor);
+        pax.setSelection(selPax-1);
+
+        et_date.setText(selDate);
+        final String[] dateSplit = selDate.split("-");
+        et_time.setText(selTime);
 
         et_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(ReservationActivity.this, date,mCalender.get(Calendar.YEAR), mCalender.get(Calendar.MONTH), mCalender.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(UpdateBookingActivity.this, date, Integer.parseInt(dateSplit[2]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[0])).show();
             }
         });
 
         et_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new TimePickerDialog(ReservationActivity.this, android.R.style.Theme_Holo_Light_Dialog, time, mCalender.get(Calendar.HOUR), mCalender.get(Calendar.MINUTE), false).show();
+                new TimePickerDialog(UpdateBookingActivity.this, android.R.style.Theme_Holo_Light_Dialog, time, mCalender.get(Calendar.HOUR), mCalender.get(Calendar.MINUTE), false).show();
                 updateCapacity(et_date.getText().toString(), et_time.getText().toString());
             }
         });
-        mbtn_submit.setOnClickListener(new View.OnClickListener() {
+        mbtn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createReservation(currentUser.getFirstName() + " " + currentUser.getLastName(), pax.getSelectedItem().toString(), et_date.getText().toString(), et_time.getText().toString());
+                createReservation(currentUser.getFirstName() + " " + currentUser.getLastName(), pax.getSelectedItem().toString(), et_date.getText().toString(), et_time.getText().toString(), selDate, selTime);
             }
         });
+        mbtn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteReservation(currentUser.getFirstName() + " " + currentUser.getLastName(), selDate, selTime);
+            }
+        });
+    }
+
+    private void deleteReservation(String name, String selectedDate, String selectedTime) {
+        Query query = mDatabase.child("Reservations").child(selectedDate).child(selectedTime).child(name);
+
+        query.getRef().removeValue();
 
     }
 
@@ -117,22 +145,23 @@ public class ReservationActivity extends AppCompatActivity{
         });
     }
 
-    private void createReservation(String name, String pax, String selectedDate, String selectedTime){
+    private void createReservation(String name, String pax, String selectedDate, String selectedTime, String oldDate, String oldTime){
         if(bookingDate.after(rightNow)) {
             if (!maxCapacity(pax, selectedDate, selectedTime)) {
                 Reservation reservation = new Reservation(pax);
 
                 mDatabase.child("Reservations").child(selectedDate).child(selectedTime).child(name).setValue(reservation);
-                Toast.makeText(ReservationActivity.this, "Booking successful", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(ReservationActivity.this, MenuActivity.class);
+                deleteReservation(name, oldDate, oldTime);
+                Toast.makeText(UpdateBookingActivity.this, "Booking successfully changed!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(UpdateBookingActivity.this, MenuActivity.class);
                 startActivity(intent);
             } else {
-                Toast.makeText(ReservationActivity.this, "Selected time is fully booked, please select a different time.", Toast.LENGTH_LONG).show();
+                Toast.makeText(UpdateBookingActivity.this, "Selected time is fully booked, please select a different time.", Toast.LENGTH_LONG).show();
                 updateCapacity(selectedDate, selectedTime);
             }
         }
         else {
-            Toast.makeText(ReservationActivity.this, "Can't make a booking in the past! Please pick a different date/time.", Toast.LENGTH_LONG).show();
+            Toast.makeText(UpdateBookingActivity.this, "Can't make a booking in the past! Please pick a different date/time.", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -214,5 +243,4 @@ public class ReservationActivity extends AppCompatActivity{
 
         et_date.setText(sdf.format(mCalender.getTime()));
     }
-
 }

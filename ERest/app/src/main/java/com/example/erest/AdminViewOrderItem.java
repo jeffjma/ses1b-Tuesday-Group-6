@@ -4,7 +4,6 @@ public class AdminViewOrderItem {
     private String user;
     private String food;
     private String price;
-    private boolean status;
 
     public AdminViewOrderItem() {
     }
@@ -26,10 +25,6 @@ public class AdminViewOrderItem {
         this.price=price;
     }
 
-    public boolean isStatus() { return status; }
-
-
-
     public String getUser() {
         return user;
     }
@@ -40,6 +35,5 @@ public class AdminViewOrderItem {
         return price;
     }
 
-    public void setStatus(boolean status) { this.status = status; }
-
 }
+

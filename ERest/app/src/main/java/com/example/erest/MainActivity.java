@@ -78,11 +78,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    getDataFromDatabase();
+                    getUserType();
                     validate(str_username, str_password);
-                    target_usertype=null;
                     ((eRestaurantApplication) getApplication()).setUserEmail(str_username);
-                    Toast.makeText(MainActivity.this, "Welcome " + ((eRestaurantApplication) getApplication()).getUserEmail(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -96,19 +95,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     //get data from database
-    private void getDataFromDatabase()
+    private void getUserType()
     {
         final Query query = myRef.child("Users");
         query.addValueEventListener(new ValueEventListener() {
+            String userEmail = str_username.replace(".", "_dot_");
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot ds: snapshot.getChildren())
-                {
-                    if((ds.child("name").getValue().toString()).equals(str_username.split("@")[0]))
-                    {
-                        target_usertype=ds.child("usertype").getValue().toString();
-                       break;
-                    }
+                if(snapshot.hasChild(userEmail)) {
+                    target_usertype = snapshot.child(userEmail).child("usertype").getValue().toString();
                 }
             }
             @Override

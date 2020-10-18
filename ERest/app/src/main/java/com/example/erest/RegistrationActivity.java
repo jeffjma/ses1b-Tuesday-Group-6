@@ -67,7 +67,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void registerNewUser(String email, String firstName, String lastName, String usertype) {
-        User newUser = new User(firstName, lastName, email.split("@")[0],usertype);
+        User newUser = new User(firstName, lastName, usertype);
         mDatabase.child("Users").child(email).setValue(newUser);
     }
 

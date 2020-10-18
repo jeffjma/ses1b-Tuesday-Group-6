@@ -1,6 +1,8 @@
 package com.example.erest;
 
-public class MenuItem {
+import java.io.Serializable;
+
+public class MenuItem implements Serializable {
     String Name;
     String Price;
 

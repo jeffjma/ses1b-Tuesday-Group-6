@@ -29,7 +29,7 @@ public class AdminViewReservationAdapter extends RecyclerView.Adapter<AdminViewR
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.admin_viewreservation_items, parent, false);
 
-        return new ViewHolder(view);
+        return new AdminViewReservationAdapter.ViewHolder(view);
     }
 
     @Override

@@ -1,16 +1,15 @@
 package com.example.erest;
 
 public class User {
-    String firstName, lastName, name, usertype;
+    String firstName, lastName, usertype;
 
     public User() {
 
     }
 
-    public User(String fName, String lName, String name, String usertype) {
+    public User(String fName, String lName, String usertype) {
         this.firstName = fName;
         this.lastName = lName;
-        this.name=name;
         this.usertype=usertype;
     }
 
@@ -28,14 +27,6 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String newemail) {
-        this.name = newemail;
     }
 
     public String getUsertype() {

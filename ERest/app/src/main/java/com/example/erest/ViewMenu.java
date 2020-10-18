@@ -8,11 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,66 +39,29 @@ public class ViewMenu extends AppCompatActivity implements ViewMenuInterface{
     private ArrayList<MenuItem> itemList;
     private RecyclerAdapter recyclerAdapter;
     private Button viewCartBtn;
-    private Button confirmOrderBtn;
     private Order newOrder = new Order();
     private Spinner sp_menu_type;
-    private Spinner sp_booking;
-    private EditText et_discount_code;
-    private List<String> bookingRef = new ArrayList<String>();
-    private User currentUser = new User();
-    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_menu);
 
-        userEmail = ((eRestaurantApplication) getApplication()).getUserEmail();
-
-        Log.d("debuggertag", userEmail);
-
         viewCartBtn = findViewById(R.id.btn_view_order);
-        confirmOrderBtn = findViewById(R.id.btn_confirm_order);
         sp_menu_type = findViewById(R.id.sp_menu_type);
-        sp_booking = findViewById(R.id.sp_booking);
-        et_discount_code = findViewById(R.id.et_discount);
 
         //Firebase
         myRef = FirebaseDatabase.getInstance().getReference();
 
         //Buttons
-        confirmOrderBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                placeOrder();
-            }
-        });
         viewCartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent intent = new Intent(ViewMenu.this, OrderPopupActivity.class);
-                intent.putExtra("food", newOrder.getFood());
-                intent.putExtra("price", String.valueOf(newOrder.getPrice()));
+                Log.d("debuggertag", ""+newOrder.getPrice());
+                Intent intent = new Intent(ViewMenu.this, CompleteOrderActivity.class);
+                intent.putExtra("Order", newOrder);
                 startActivity(intent);
-            }
-        });
 
-        //When discount code entered
-        et_discount_code.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                newOrder.setDiscount(et_discount_code.getText().toString());
             }
         });
 
@@ -121,8 +82,6 @@ public class ViewMenu extends AppCompatActivity implements ViewMenuInterface{
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        updateUserInfo();
-
         //Array List
         itemList = new ArrayList<>();
 
@@ -132,54 +91,19 @@ public class ViewMenu extends AppCompatActivity implements ViewMenuInterface{
         //Get Data Method
         GetDataFromFirebase();
 
-    }
-
-    private void updateUserInfo() {
-        Query query = myRef.child("Users").child(userEmail);
-
-        query.addValueEventListener(new ValueEventListener() {
+        //Update Menu Type Display
+        sp_menu_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                currentUser.setFirstName(snapshot.child("firstName").getValue().toString());
-                currentUser.setLastName(snapshot.child("lastName").getValue().toString());
-                Log.d("debuggertag", "user info updated!");
-                updateBookingSpinner();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                GetDataFromFirebase();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println("Read failed");
-            }
-        });
-    }
-
-    private void updateBookingSpinner() {
-        Query query = myRef.child("Reservations");
-
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String userName = currentUser.getFirstName()+" "+currentUser.getLastName();
-                for(DataSnapshot date: snapshot.getChildren()){
-                    for(DataSnapshot time: date.getChildren()){
-                        for(DataSnapshot name: time.getChildren()){
-                            if(name.getKey().equals(userName)) {
-                                bookingRef.add(name.getRef().toString());
-                                Log.d("debuggertag", name.getRef().toString());
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
-        ArrayAdapter<String> dataAdaptor = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, bookingRef);
-        dataAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp_booking.setAdapter(dataAdaptor);
+
     }
 
     private void GetDataFromFirebase() {
@@ -226,15 +150,35 @@ public class ViewMenu extends AppCompatActivity implements ViewMenuInterface{
         itemList = new ArrayList<>();
     }
 
-    private void placeOrder() {
-        myRef.child("Order").child(newOrder.getUser()).setValue(newOrder);
-        Toast.makeText(ViewMenu.this, "Order Placed", Toast.LENGTH_SHORT).show();
-        newOrder.clearCart();
+    private void addToCart(String name) {
+        Query query = myRef.child("Menu");
+        final String itemName = name;
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot menuType: snapshot.getChildren()) {
+                    for(DataSnapshot ds: menuType.getChildren()) {
+                        if (ds.child("Name").getValue().toString().equals(itemName)) {
+                            MenuItem item = new MenuItem();
+                            item.setName(ds.child("Name").getValue().toString());
+                            item.setPrice(ds.child("Price").getValue().toString());
+                            newOrder.addToCart(item);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
-    public void onItemClick(int position, String Name, String Price) {
-        newOrder.addToCart(Name, Price);
+    public void onItemClick(int position, String Name) {
+        addToCart(Name);
         Toast.makeText(ViewMenu.this, Name + " added to order", Toast.LENGTH_SHORT).show();
     }
 }
