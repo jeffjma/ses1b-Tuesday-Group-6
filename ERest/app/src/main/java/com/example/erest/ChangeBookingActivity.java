@@ -19,8 +19,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ChangeBookingActivity extends AppCompatActivity implements ChangeBookingInterface{
 
@@ -31,7 +34,8 @@ public class ChangeBookingActivity extends AppCompatActivity implements ChangeBo
     private String userEmail;
     private User currentUser = new User();
     private String fullName;
-    private final Calendar mCalendar = Calendar.getInstance();
+    private Calendar mCalendar = Calendar.getInstance();
+    private Calendar bookingCheckCalendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,12 @@ public class ChangeBookingActivity extends AppCompatActivity implements ChangeBo
 
         bookingList = new ArrayList<>();
 
+        bookingCheckCalendar.add(Calendar.DATE, +1);
+
         getDataFromFirebase();
+
+
+        Log.d("debuggertag", mCalendar.getTime().toString());
     }
 
     private void updateUserInfo() {
@@ -84,10 +93,18 @@ public class ChangeBookingActivity extends AppCompatActivity implements ChangeBo
                     for (DataSnapshot time : date.getChildren()) {
                         for (DataSnapshot name : time.getChildren()) {
                             if(name.getKey().equals(currentUser.firstName + " " + currentUser.lastName)){
-                                ChangeBookingItem changeBookingItem = new ChangeBookingItem();
-                                changeBookingItem.setDate(date.getKey());
-                                changeBookingItem.setTime(time.getKey());
-                                bookingList.add(changeBookingItem);
+                                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                                try {
+                                    mCalendar.setTime(sdf.parse(date.getKey()));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                if(!mCalendar.getTime().before(bookingCheckCalendar.getTime())) {
+                                    ChangeBookingItem changeBookingItem = new ChangeBookingItem();
+                                    changeBookingItem.setDate(date.getKey());
+                                    changeBookingItem.setTime(time.getKey());
+                                    bookingList.add(changeBookingItem);
+                                }
                             }
                             updateRecyclerView();
                         }

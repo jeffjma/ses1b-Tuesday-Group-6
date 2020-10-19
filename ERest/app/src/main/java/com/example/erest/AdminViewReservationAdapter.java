@@ -16,11 +16,13 @@ public class AdminViewReservationAdapter extends RecyclerView.Adapter<AdminViewR
     private static final String Tag = "RecyclerView";
     private Context mContext;
     private ArrayList<AdminViewReservationItem> itemList = new ArrayList<>();
+    private OnItemClickInterface onItemClickInterface;
 
 
-    public AdminViewReservationAdapter(Context mContext, ArrayList<AdminViewReservationItem> itemList) {
+    public AdminViewReservationAdapter(Context mContext, ArrayList<AdminViewReservationItem> itemList, OnItemClickInterface onItemClickInterface) {
         this.mContext = mContext;
         this.itemList = itemList;
+        this.onItemClickInterface = onItemClickInterface;
     }
 
     @NonNull
@@ -38,13 +40,13 @@ public class AdminViewReservationAdapter extends RecyclerView.Adapter<AdminViewR
         holder.name.setText(itemList.get(position).getName());
         holder.pax.setText(itemList.get(position).getPax());
         holder.time.setText(itemList.get(position).getTime());
-
     }
 
     @Override
     public int getItemCount() {
         return itemList.size();
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         //widgets
@@ -58,7 +60,12 @@ public class AdminViewReservationAdapter extends RecyclerView.Adapter<AdminViewR
             name = itemView.findViewById(R.id.tv_name);
             pax = itemView.findViewById(R.id.tv_pax);
             time = itemView.findViewById(R.id.tv_time);
-
+            name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemClickInterface.onClick(getAdapterPosition(), itemList.get(getAdapterPosition()).getTime(), itemList.get(getAdapterPosition()).getName());
+                }
+            });
         }
     }
 

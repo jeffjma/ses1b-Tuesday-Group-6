@@ -28,6 +28,14 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_discount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Discount"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/tv_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +47,7 @@
             android:id="@+id/btn_ok"
             android:layout_width="50pt"
             android:layout_height="20pt"
-            android:text="Delete"
+            android:text="Print"
             android:textSize="20dp"></Button>
 
 
