@@ -14,6 +14,7 @@ public class MenuActivity extends AppCompatActivity
     private Button mBtnOrder;
     private Button mBtnMenuLogout;
     private Button mBtnReservation;
+    private Button mBtnChangeReservation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class MenuActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(MenuActivity.this,MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         mBtnReservation=findViewById(R.id.btn_reservation);
@@ -43,6 +45,14 @@ public class MenuActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuActivity.this, ReservationActivity.class);
+                startActivity(intent);
+            }
+        });
+        mBtnChangeReservation = findViewById(R.id.btn_change_reservation);
+        mBtnChangeReservation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuActivity.this, ChangeBookingActivity.class);
                 startActivity(intent);
             }
         });

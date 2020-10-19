@@ -68,7 +68,7 @@
             android:id="@+id/btn_back"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="Back"
+            android:text="Delete"
             android:textSize="15dp"></Button>
 
     </LinearLayout>

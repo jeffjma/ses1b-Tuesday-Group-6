@@ -5,23 +5,26 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".eRestaurantApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminViewStaff"></activity>
+        <activity android:name=".UpdateBookingActivity" />
+        <activity android:name=".ChangeBookingActivity" />
+        <activity android:name=".CompleteOrderActivity" />
+        <activity android:name=".AdminViewStaff" />
         <activity android:name=".ViewMenu" />
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".MenuActivity" />
-        <activity android:name=".OrderActivity" />
         <activity android:name=".ReservationActivity" />
         <activity android:name=".AdminMenu" />
         <activity android:name=".AdminViewOrder" />
         <activity android:name=".AdminViewInvoice" />
         <activity android:name=".AdminViewReservation" />
-        <activity android:name=".AdminInvoiceDetail"/>
+        <activity android:name=".AdminInvoiceDetail" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -12,32 +12,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-
-    private static final String Tag = "RecyclerView";
+public class CompleteOrderAdapter extends RecyclerView.Adapter<CompleteOrderAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<MenuItem> itemList = new ArrayList<>();
+    private CompleteOrderInterface completeOrderInterface;
 
-    private ViewMenuInterface viewMenuInterface;
 
-
-    public RecyclerAdapter(Context mContext, ArrayList<MenuItem> itemList, ViewMenuInterface viewMenuInterface) {
+    public CompleteOrderAdapter(Context mContext, ArrayList<MenuItem> itemList, CompleteOrderInterface completeOrderInterface) {
         this.mContext = mContext;
         this.itemList = itemList;
-        this.viewMenuInterface = viewMenuInterface;
+        this.completeOrderInterface = completeOrderInterface;
     }
 
     @NonNull
     @Override
-    public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CompleteOrderAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item, parent, false);
-        return new ViewHolder(view);
+                .inflate(R.layout.order_item, parent, false);
+        return new CompleteOrderAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CompleteOrderAdapter.ViewHolder holder, int position) {
         //Textview
         holder.name.setText(itemList.get(position).getName());
         holder.price.setText(itemList.get(position).getPrice());
@@ -53,23 +49,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         //widgets
         TextView name;
         TextView price;
-        Button order;
+        Button btn_delete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            name = itemView.findViewById(R.id.tv_name);
-            price = itemView.findViewById(R.id.tv_price);
-            order = itemView.findViewById(R.id.btn_order);
-            order.setOnClickListener(new View.OnClickListener() {
+            name = itemView.findViewById(R.id.tv_item_name);
+            price = itemView.findViewById(R.id.tv_item_price);
+            btn_delete = itemView.findViewById(R.id.btn_delete_item);
+            btn_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    viewMenuInterface.onItemClick(getAdapterPosition(), name.getText().toString());
-                    //Order newOrder = new Order();
-                    //newOrder.addToCart(name.getText().toString(), price.getText().toString());
+                    itemList.remove(getAdapterPosition());
+                    notifyDataSetChanged();
+                    completeOrderInterface.onDataChange(getAdapterPosition(), price.getText().toString());
                 }
             });
         }
     }
-
 }

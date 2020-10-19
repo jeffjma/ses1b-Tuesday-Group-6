@@ -5,10 +5,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
-import android.content.Intent;
+import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,7 +18,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AdminViewReservation extends AppCompatActivity{
 
@@ -29,6 +32,8 @@ public class AdminViewReservation extends AppCompatActivity{
 
     //Variables
     private ArrayList<AdminViewReservationItem> itemList;
+    private TextView tv_date;
+    private final Calendar mCalender = Calendar.getInstance();
     private AdminViewReservationAdapter recyclerAdapter;
 
     @Override
@@ -36,12 +41,24 @@ public class AdminViewReservation extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservationview);
 
+        tv_date = (TextView) findViewById(R.id.tv_date);
+
+        updateDate();
+
+
+        tv_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(AdminViewReservation.this, date, mCalender.get(Calendar.YEAR), mCalender.get(Calendar.MONTH), mCalender.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView2);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
         myRef = FirebaseDatabase.getInstance().getReference();
+
 
         //Array List
         itemList = new ArrayList<>();
@@ -54,7 +71,7 @@ public class AdminViewReservation extends AppCompatActivity{
     }
     private void GetDataFromFirebase() {
 
-        Query query = myRef.child("Reservations");
+        Query query = myRef.child("Reservations").child(tv_date.getText().toString());
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -63,11 +80,13 @@ public class AdminViewReservation extends AppCompatActivity{
                 for(DataSnapshot ds: snapshot.getChildren()){
                     AdminViewReservationItem items = new AdminViewReservationItem();
 
-                    items.setDate(ds.child("date").getValue().toString());
-                    items.setPax(ds.child("pax").getValue().toString());
-                    items.setTime(ds.child("time").getValue().toString());
+                    items.setTime(ds.getKey());
+                    for(DataSnapshot n: ds.getChildren()){
+                        items.setName(n.getKey());
+                        items.setPax(n.child("pax").getValue().toString());
+                        itemList.add(items);
+                    }
 
-                    itemList.add(items);
                 }
                 recyclerAdapter = new AdminViewReservationAdapter(getApplicationContext(), itemList);
                 recyclerView.setAdapter(recyclerAdapter);
@@ -94,6 +113,25 @@ public class AdminViewReservation extends AppCompatActivity{
         }
 
         itemList = new ArrayList<>();
+    }
+
+    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+            mCalender.set(Calendar.YEAR, year);
+            mCalender.set(Calendar.MONTH, monthOfYear);
+            mCalender.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateDate();
+            GetDataFromFirebase();
+        }
+    };
+
+    private void updateDate() {
+        String myFormat = "dd-MM-yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
+
+        tv_date.setText(sdf.format(mCalender.getTime()));
     }
 
 }

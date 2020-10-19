@@ -1,6 +1,9 @@
 package com.example.erest;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.*;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +25,7 @@ public class AdminViewInvoice extends AppCompatActivity {
     private static final String TAG = "viewMenu";
 
     RecyclerView recyclerView;
+    private Button mbtn_back;
 
     //Firebase
     private DatabaseReference myRef;
@@ -34,6 +38,15 @@ public class AdminViewInvoice extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_invoice);
+
+        mbtn_back=findViewById(R.id.btn_invoiceback);
+        mbtn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminViewInvoice.this,AdminMenu.class);
+                startActivity(intent);
+            }
+        });
 
         //Recycler View
         recyclerView = (RecyclerView) findViewById(R.id.invoicerecycle);
@@ -63,17 +76,21 @@ public class AdminViewInvoice extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ClearAll();
+                int id=1;
                 for(DataSnapshot ds: snapshot.getChildren()){
                     AdminInvoiceItem items = new AdminInvoiceItem();
 
-                    items.setId(ds.child("Id").getValue().toString());
-                    items.setName(ds.child("User").getValue().toString());
-                    items.setPrice(ds.child("Price").getValue().toString());
-                    items.setFood(ds.child("Food").getValue().toString());
-                    items.setDiscount(ds.child("Discount").getValue().toString());
+                    items.setId("00"+id);
+                    items.setName(ds.child("user").getValue().toString());
+                    items.setPrice(ds.child("price").getValue().toString());
+                    items.setFood(ds.child("food").getValue().toString());
+
+                    id++;
 
                     itemList.add(items);
                 }
+                //test
+
 
                 adminInvoiceAdapter = new AdminInvoiceAdapter(getApplicationContext(), itemList);
                 recyclerView.setAdapter(adminInvoiceAdapter);
@@ -101,6 +118,8 @@ public class AdminViewInvoice extends AppCompatActivity {
 
         itemList = new ArrayList<>();
     }
+
+
 
 }
 

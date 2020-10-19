@@ -1,25 +1,25 @@
 package com.example.erest;
 
 public class AdminViewReservationItem {
-    private String date;
+    private String name;
     private String pax;
     private String time;
 
     public AdminViewReservationItem() {
     }
 
-    public AdminViewReservationItem(String date, String pax, String time) {
-        this.date = date;
+    public AdminViewReservationItem(String name, String pax, String time) {
+        this.name = name;
         this.pax = pax;
         this.time = time;
     }
 
-    public String getDate() {
-        return date;
+    public String getName() {
+        return name;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPax() {
@@ -27,7 +27,7 @@ public class AdminViewReservationItem {
     }
 
     public void setPax(String pax) {
-        this.pax = pax;
+        this.pax = "Pax: " + pax;
     }
 
     public String getTime() {

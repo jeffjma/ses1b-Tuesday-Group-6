@@ -56,17 +56,22 @@ public class AdminViewOrder extends AppCompatActivity{
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ClearAll();
-                for(DataSnapshot ds: snapshot.getChildren()){
-                    AdminViewOrderItem items = new AdminViewOrderItem();
+                for(DataSnapshot cust: snapshot.getChildren()){
+                    for(DataSnapshot order: cust.getChildren()) {
+                        AdminViewOrderItem items = new AdminViewOrderItem();
+                        String food = "Food: \n";
+                        double price = Double.parseDouble(order.child("price").getValue().toString());
+                        double discountAmount =  Double.parseDouble(order.child("discountAmount").getValue().toString());
+                        price -= discountAmount;
+                        items.setUser("Customer Name: " + order.child("user").getValue().toString());
+                        items.setPrice("$"+price);
+                        for(DataSnapshot meals: order.child("food").getChildren()) {
+                            food += meals.child("name").getValue().toString() + "\n";
+                        }
+                        items.setFood(food);
 
-                    items.setUser(ds.child("User").getValue().toString());
-                    items.setFood(ds.child("Food").getValue().toString());
-                    items.setPrice(ds.child("Price").getValue().toString());
-
-
-
-
-                    itemList.add(items);
+                        itemList.add(items);
+                    }
                 }
 
                 adminViewOrderAdapter = new AdminViewOrderAdapter(getApplicationContext(), itemList);

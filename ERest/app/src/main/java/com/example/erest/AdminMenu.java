@@ -26,6 +26,7 @@ public class AdminMenu extends AppCompatActivity{
             public void onClick(View view) {
                 Intent intent = new Intent(AdminMenu.this,MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         mBtnAdminToOrder=findViewById(R.id.btn_vieworder);
@@ -50,7 +51,8 @@ public class AdminMenu extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AdminMenu.this,AdminViewStaff.class);
-                System.out.println("TEST");
+                System.out.println("Test");
+                startActivity(intent);
             }
         });
               

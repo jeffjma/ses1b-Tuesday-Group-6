@@ -4,20 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ReservationActivity">
-
+    tools:context=".UpdateBookingActivity">
 
     <Button
-        android:id="@+id/btn_submit"
+        android:id="@+id/btn_update_booking"
         android:layout_width="192dp"
         android:layout_height="wrap_content"
-        android:text="Submit"
+        android:text="Update Booking"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.526" />
+
+    <Button
+        android:id="@+id/btn_cancel_booking"
+        android:layout_width="192dp"
+        android:layout_height="wrap_content"
+        android:text="Cancel Booking"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.628" />
 
     <EditText
         android:id="@+id/et_date"
@@ -39,9 +50,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:focusable="false"
         android:hint="Time"
         android:inputType="time"
-        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
