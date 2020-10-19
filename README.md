@@ -1,5 +1,10 @@
 # eRestaurant
 # Updates:
+Version 1.5
+- Added Change Reservation
+- Added Cancel Order
+- Logout no longer allows user to back into the app.
+
 Version 1.4
 - Added meal order screen
 - Added view reservation screen
