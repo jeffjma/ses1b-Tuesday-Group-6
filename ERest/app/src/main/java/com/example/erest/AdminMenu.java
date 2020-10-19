@@ -26,6 +26,7 @@ public class AdminMenu extends AppCompatActivity{
             public void onClick(View view) {
                 Intent intent = new Intent(AdminMenu.this,MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         mBtnAdminToOrder=findViewById(R.id.btn_vieworder);

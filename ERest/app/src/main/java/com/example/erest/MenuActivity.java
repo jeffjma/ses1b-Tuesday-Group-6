@@ -37,6 +37,7 @@ public class MenuActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(MenuActivity.this,MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         mBtnReservation=findViewById(R.id.btn_reservation);
