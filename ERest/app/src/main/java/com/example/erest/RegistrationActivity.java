@@ -2,7 +2,6 @@ package com.example.erest;
 
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
@@ -14,7 +13,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -52,8 +50,6 @@ public class RegistrationActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()) {
-                                FirebaseUser signed = task.getResult().getUser();
-                                signed.sendEmailVerification();
                                 registerNewUser(userEmail.replace(".", "_dot_"), fName, lName,"customer");
                                 Toast.makeText(RegistrationActivity.this, "You have successfully Registered", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
@@ -67,10 +63,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
             }
         });
-
-    }
-
-    private void sendRegistrationEmail() {
 
     }
 

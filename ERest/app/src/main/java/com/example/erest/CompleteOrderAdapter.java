@@ -15,13 +15,12 @@ import java.util.ArrayList;
 public class CompleteOrderAdapter extends RecyclerView.Adapter<CompleteOrderAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<MenuItem> itemList = new ArrayList<>();
-    private CompleteOrderInterface completeOrderInterface;
 
 
-    public CompleteOrderAdapter(Context mContext, ArrayList<MenuItem> itemList, CompleteOrderInterface completeOrderInterface) {
+
+    public CompleteOrderAdapter(Context mContext, ArrayList<MenuItem> itemList) {
         this.mContext = mContext;
         this.itemList = itemList;
-        this.completeOrderInterface = completeOrderInterface;
     }
 
     @NonNull
@@ -62,7 +61,6 @@ public class CompleteOrderAdapter extends RecyclerView.Adapter<CompleteOrderAdap
                 public void onClick(View view) {
                     itemList.remove(getAdapterPosition());
                     notifyDataSetChanged();
-                    completeOrderInterface.onDataChange(getAdapterPosition(), price.getText().toString());
                 }
             });
         }

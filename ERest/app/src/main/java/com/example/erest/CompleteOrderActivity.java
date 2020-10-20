@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -24,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompleteOrderActivity extends AppCompatActivity implements CompleteOrderInterface{
+public class CompleteOrderActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private Double price, discountAmount;
@@ -67,7 +66,7 @@ public class CompleteOrderActivity extends AppCompatActivity implements Complete
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        completeOrderAdapter = new CompleteOrderAdapter(getApplicationContext(), currOrder.getFood(), CompleteOrderActivity.this);
+        completeOrderAdapter = new CompleteOrderAdapter(getApplicationContext(), currOrder.getFood());
         recyclerView.setAdapter(completeOrderAdapter);
         completeOrderAdapter.notifyDataSetChanged();
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
@@ -110,16 +109,6 @@ public class CompleteOrderActivity extends AppCompatActivity implements Complete
         });
     }
 
-    private  void updateTotal(int position, double price) {
-        ArrayList<MenuItem> menuItems = new ArrayList<>();
-        menuItems = currOrder.getFood();
-        menuItems.remove(position-1);
-        currOrder.setFood(menuItems);
-        currOrder.setPrice(currOrder.getPrice()-price);
-        price = currOrder.getPrice();
-        updateDiscount(currOrder.getDiscount());
-    }
-
     private void countChildren() {
         Query query = mDatabase.child("Order").child(currentUser.getFirstName() + " " + currentUser.getLastName());
 
@@ -140,8 +129,6 @@ public class CompleteOrderActivity extends AppCompatActivity implements Complete
     private void placeOrder() {
         mDatabase.child("Order").child(currOrder.getUser()).child("0" + count).setValue(currOrder);
         Toast.makeText(CompleteOrderActivity.this, "Order Placed", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(CompleteOrderActivity.this, MenuActivity.class);
-        startActivity(intent);
     }
 
     private void updateBookingSpinner() {
@@ -160,7 +147,6 @@ public class CompleteOrderActivity extends AppCompatActivity implements Complete
                                 bookingDate = bookingDate.replaceAll("/", " ");
                                 bookingDate = bookingDate.replaceAll("%3A", ":");
                                 bookingDate = bookingDate.replaceAll("%20", " ");
-                                bookingDate = bookingDate.trim();
                                 bookingRef.add(bookingDate);
                                 Log.d("debuggertag", bookingDate);
                                 tester();
@@ -216,7 +202,6 @@ public class CompleteOrderActivity extends AppCompatActivity implements Complete
                     currOrder.setDiscountAmount(
                             currOrder.getPrice() *
                                     Double.parseDouble(snapshot.child(discountCode).child("discount").getValue().toString()));
-                    tv_price.setText("Total Price: $" + (price - discountAmount));
                     tv_discount.setText("Discount: $" + currOrder.getDiscountAmount());
                 }
                 else {
@@ -229,11 +214,5 @@ public class CompleteOrderActivity extends AppCompatActivity implements Complete
 
             }
         });
-    }
-
-    @Override
-    public void onDataChange(int position, String price) {
-        double doublePrice = Double.parseDouble(price.substring(1));
-        updateTotal(position, doublePrice);
     }
 }

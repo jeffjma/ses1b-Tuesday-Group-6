@@ -19,13 +19,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class AdminViewOrder extends AppCompatActivity implements AdminOrderInterface{
+public class AdminViewOrder extends AppCompatActivity{
     private static final String TAG = "viewmenu";
 
     RecyclerView recyclerView;
 
     private DatabaseReference myRef;
-    private String name, dateTime;
+
 
     private ArrayList<AdminViewOrderItem> itemList;
     private AdminViewOrderAdapter adminViewOrderAdapter;
@@ -35,8 +35,6 @@ public class AdminViewOrder extends AppCompatActivity implements AdminOrderInter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_view_order);
 
-        name = getIntent().getStringExtra("name");
-        dateTime = getIntent().getStringExtra("date") + " " + getIntent().getStringExtra("time");
 
         recyclerView = (RecyclerView) findViewById(R.id.OrderRecycle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -52,38 +50,34 @@ public class AdminViewOrder extends AppCompatActivity implements AdminOrderInter
 
     private void GetDataFromFirebase() {
 
-        final Query query = myRef.child("Order").child(name);
+        final Query query = myRef.child("Order");
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ClearAll();
-                    for(DataSnapshot order: snapshot.getChildren()) {
-                        int i=0;
-                        if(order.child("reservation").getValue().toString().equals(dateTime)) {
-                            AdminViewOrderItem items = new AdminViewOrderItem();
-                            String food = "Food: \n";
-                            double price = Double.parseDouble(order.child("price").getValue().toString());
-                            double discountAmount = Double.parseDouble(order.child("discountAmount").getValue().toString());
-                            price -= discountAmount;
-                            items.setUser("Customer Name:\n" + order.child("user").getValue().toString());
-                            items.setPrice("Total Price $" + price);
-                            for (DataSnapshot meals : order.child("food").getChildren()) {
-                                food += meals.child("name").getValue().toString() + " " + meals.child("price").getValue().toString() + "\n";
-                            }
-                            items.setFood(food);
-                            items.setDiscount("Discount: $" + order.child("discountAmount").getValue().toString());
-                            itemList.add(items);
-                            break;
+                for(DataSnapshot cust: snapshot.getChildren()){
+                    for(DataSnapshot order: cust.getChildren()) {
+                        AdminViewOrderItem items = new AdminViewOrderItem();
+                        String food = "Food: \n";
+                        double price = Double.parseDouble(order.child("price").getValue().toString());
+                        double discountAmount =  Double.parseDouble(order.child("discountAmount").getValue().toString());
+                        price -= discountAmount;
+                        items.setUser("Customer Name: " + order.child("user").getValue().toString());
+                        items.setPrice("$"+price);
+                        for(DataSnapshot meals: order.child("food").getChildren()) {
+                            food += meals.child("name").getValue().toString() + "\n";
                         }
-                        if(++i == snapshot.getChildrenCount()) {
-                            Toast.makeText(AdminViewOrder.this, "Booking doesn't have an order.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                        items.setFood(food);
 
-                adminViewOrderAdapter = new AdminViewOrderAdapter(getApplicationContext(), itemList, AdminViewOrder.this);
+                        itemList.add(items);
+                    }
+                }
+
+                adminViewOrderAdapter = new AdminViewOrderAdapter(getApplicationContext(), itemList);
                 recyclerView.setAdapter(adminViewOrderAdapter);
                 adminViewOrderAdapter.notifyDataSetChanged();
+                recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
             }
 
@@ -105,10 +99,5 @@ public class AdminViewOrder extends AppCompatActivity implements AdminOrderInter
         }
 
         itemList = new ArrayList<>();
-    }
-
-    @Override
-    public void print() {
-        Toast.makeText(AdminViewOrder.this, "Invoice successfully printed!", Toast.LENGTH_SHORT).show();
     }
 }

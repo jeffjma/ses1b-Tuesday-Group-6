@@ -70,7 +70,11 @@ public class MainActivity extends AppCompatActivity {
 
                 if ( str_username.length()<3 || !str_username.contains("@"))
                 {
-                    Toast.makeText(MainActivity.this,"Invalid email entered!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this,"e-mail incorrect",Toast.LENGTH_LONG).show();
+                }
+                else if(str_password.length()<3)
+                {
+                    Toast.makeText(MainActivity.this,"password should more than three",Toast.LENGTH_LONG).show();
                 }
                 else
                 {
@@ -121,12 +125,10 @@ public class MainActivity extends AppCompatActivity {
                     if(target_usertype.equals("staff"))
                     {
                         startActivity(new Intent(MainActivity.this,AdminMenu.class));
-                        finish();
                     }
                     else if(target_usertype.equals("customer"))
                     {
                         startActivity(new Intent(MainActivity.this, MenuActivity.class));
-                        finish();
                     }
                 } else {
                     Toast.makeText(MainActivity.this, "Username or Password is invalid", Toast.LENGTH_SHORT).show();

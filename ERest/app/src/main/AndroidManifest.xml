@@ -12,6 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DiscountActivity"></activity>
+        <activity android:name=".UpdateOrderActivity" />
         <activity android:name=".UpdateBookingActivity" />
         <activity android:name=".ChangeBookingActivity" />
         <activity android:name=".CompleteOrderActivity" />
@@ -22,7 +24,9 @@
         <activity android:name=".ReservationActivity" />
         <activity android:name=".AdminMenu" />
         <activity android:name=".AdminViewOrder" />
+        <activity android:name=".AdminViewInvoice" />
         <activity android:name=".AdminViewReservation" />
+        <activity android:name=".AdminInvoiceDetail" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

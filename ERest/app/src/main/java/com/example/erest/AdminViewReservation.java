@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -23,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AdminViewReservation extends AppCompatActivity implements OnItemClickInterface {
+public class AdminViewReservation extends AppCompatActivity{
 
 
     RecyclerView recyclerView;
@@ -89,7 +88,7 @@ public class AdminViewReservation extends AppCompatActivity implements OnItemCli
                     }
 
                 }
-                recyclerAdapter = new AdminViewReservationAdapter(getApplicationContext(), itemList, AdminViewReservation.this);
+                recyclerAdapter = new AdminViewReservationAdapter(getApplicationContext(), itemList);
                 recyclerView.setAdapter(recyclerAdapter);
                 recyclerAdapter.notifyDataSetChanged();
                 recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
@@ -135,12 +134,4 @@ public class AdminViewReservation extends AppCompatActivity implements OnItemCli
         tv_date.setText(sdf.format(mCalender.getTime()));
     }
 
-    @Override
-    public void onClick(int position, String time, String name) {
-        Intent intent = new Intent(AdminViewReservation.this, AdminViewOrder.class);
-        intent.putExtra("date", tv_date.getText().toString());
-        intent.putExtra("time", time);
-        intent.putExtra("name", name);
-        startActivity(intent);
-    }
 }

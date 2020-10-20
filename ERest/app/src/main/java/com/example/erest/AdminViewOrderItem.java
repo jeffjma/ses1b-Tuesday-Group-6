@@ -4,7 +4,6 @@ public class AdminViewOrderItem {
     private String user;
     private String food;
     private String price;
-    private String discount;
 
     public AdminViewOrderItem() {
     }
@@ -36,12 +35,5 @@ public class AdminViewOrderItem {
         return price;
     }
 
-    public String getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(String discount) {
-        this.discount = discount;
-    }
 }
 

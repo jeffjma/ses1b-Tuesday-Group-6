@@ -25,7 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,7 +49,6 @@ public class UpdateBookingActivity extends AppCompatActivity {
     private Date rightNow;
     private Date bookingDate;
     private DatabaseReference mDatabase;
-    private String fullName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,20 +90,13 @@ public class UpdateBookingActivity extends AppCompatActivity {
         pax.setSelection(selPax-1);
 
         et_date.setText(selDate);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
-        try {
-            mCalender.setTime(sdf.parse(selDate));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         final String[] dateSplit = selDate.split("-");
         et_time.setText(selTime);
-        bookingDate = mCalender.getTime();
 
         et_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(UpdateBookingActivity.this, date, mCalender.get(Calendar.YEAR), mCalender.get(Calendar.MONTH), mCalender.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(UpdateBookingActivity.this, date, Integer.parseInt(dateSplit[2]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[0])).show();
             }
         });
 
@@ -126,31 +117,6 @@ public class UpdateBookingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 deleteReservation(currentUser.getFirstName() + " " + currentUser.getLastName(), selDate, selTime);
-                deleteOrder();
-            }
-        });
-    }
-
-    private void deleteOrder() {
-        Query query = mDatabase.child("Order").child(fullName);
-        final String dateTime = selDate + " " + selTime;
-
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot order: snapshot.getChildren()) {
-                    if(order.child("reservation").getValue().toString().equals(dateTime)){
-                        Log.d("debuggertag", order.getRef().toString());
-                        order.getRef().removeValue();
-                        Intent intent = new Intent(UpdateBookingActivity.this, MenuActivity.class);
-                        startActivity(intent);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
@@ -170,7 +136,6 @@ public class UpdateBookingActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 currentUser.setFirstName(snapshot.child("firstName").getValue().toString());
                 currentUser.setLastName(snapshot.child("lastName").getValue().toString());
-                fullName = currentUser.getFirstName() + " " + currentUser.getLastName();
             }
 
             @Override
@@ -186,9 +151,7 @@ public class UpdateBookingActivity extends AppCompatActivity {
                 Reservation reservation = new Reservation(pax);
 
                 mDatabase.child("Reservations").child(selectedDate).child(selectedTime).child(name).setValue(reservation);
-                if(!(selectedDate.equals(oldDate) && selectedTime.equals(oldTime))) {
-                    deleteReservation(name, oldDate, oldTime);
-                }
+                deleteReservation(name, oldDate, oldTime);
                 Toast.makeText(UpdateBookingActivity.this, "Booking successfully changed!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(UpdateBookingActivity.this, MenuActivity.class);
                 startActivity(intent);
