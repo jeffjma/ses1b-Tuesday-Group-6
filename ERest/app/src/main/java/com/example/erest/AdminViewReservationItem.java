@@ -8,7 +8,7 @@ public class AdminViewReservationItem {
     public AdminViewReservationItem() {
     }
 
-    public AdminViewReservationItem(String name, String pax, String time) {
+    public AdminViewReservationItem(String name, String pax, String time, String date) {
         this.name = name;
         this.pax = pax;
         this.time = time;

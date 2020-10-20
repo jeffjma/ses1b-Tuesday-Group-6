@@ -15,11 +15,13 @@ public class AdminViewOrderAdapter  extends RecyclerView.Adapter<AdminViewOrderA
 
     private Context mContext;
     private ArrayList<AdminViewOrderItem> aitemList = new ArrayList<>();
+    private AdminOrderInterface adminOrderInterface;
 
 
-    public AdminViewOrderAdapter(Context mContext, ArrayList<AdminViewOrderItem> aitemList) {
+    public AdminViewOrderAdapter(Context mContext, ArrayList<AdminViewOrderItem> aitemList, AdminOrderInterface adminOrderInterface) {
         this.mContext = mContext;
         this.aitemList = aitemList;
+        this.adminOrderInterface = adminOrderInterface;
     }
 
     @NonNull
@@ -37,6 +39,7 @@ public class AdminViewOrderAdapter  extends RecyclerView.Adapter<AdminViewOrderA
         holder.user.setText(aitemList.get(position).getUser());
         holder.food.setText(aitemList.get(position).getFood());
         holder.price.setText(aitemList.get(position).getPrice());
+        holder.discount.setText(aitemList.get(position).getDiscount());
         //if(aitemList.get(position).isStatus())
         //{
         holder.btn_ok.setVisibility(View.VISIBLE);
@@ -63,7 +66,7 @@ public class AdminViewOrderAdapter  extends RecyclerView.Adapter<AdminViewOrderA
         TextView user;
         TextView food;
         TextView price;
-        boolean status;
+        TextView discount;
         Button btn_ok;
 
         public ViewHolder(@NonNull View itemView) {
@@ -72,6 +75,7 @@ public class AdminViewOrderAdapter  extends RecyclerView.Adapter<AdminViewOrderA
             user = itemView.findViewById(R.id.tv_user);
             food = itemView.findViewById(R.id.tv_food);
             price = itemView.findViewById(R.id.tv_price);
+            discount = itemView.findViewById(R.id.tv_discount);
             btn_ok = itemView.findViewById(R.id.btn_ok);
 
         }
@@ -80,8 +84,7 @@ public class AdminViewOrderAdapter  extends RecyclerView.Adapter<AdminViewOrderA
             btn_ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    removeAt(position);
-
+                    adminOrderInterface.print();
                 }
             });
         }
