@@ -77,4 +77,16 @@
         app:layout_constraintStart_toStartOf="@+id/btn_tomenu"
         app:layout_constraintTop_toBottomOf="@+id/btn_tomenu" />
 
+    <Button
+        android:id="@+id/btn_discounts"
+        android:layout_width="287dp"
+        android:layout_height="58dp"
+        android:text="View Discounts"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.129"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_change_reservation"
+        app:layout_constraintVertical_bias="0.045" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

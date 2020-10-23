@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,6 +35,8 @@ public class ReservationActivity extends AppCompatActivity{
     private EditText et_time;
     private EditText et_date;
     private final Calendar mCalender = Calendar.getInstance();
+    private final Calendar openTime = Calendar.getInstance();
+    private final  Calendar closeTime = Calendar.getInstance();
     private Button mbtn_submit;
     private String userEmail;
     private User currentUser = new User();
@@ -76,6 +79,20 @@ public class ReservationActivity extends AppCompatActivity{
         ArrayAdapter<String> dataAdaptor = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, numPax);
         dataAdaptor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pax.setAdapter(dataAdaptor);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mmaaa dd-MM-yyyy");
+        String open = "12:00PM " + et_date.getText().toString();
+        String close = "08:00PM " + et_date.getText().toString();
+        try {
+            openTime.setTime(sdf.parse(open));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        try {
+            closeTime.setTime(sdf.parse(close));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         et_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,10 +139,11 @@ public class ReservationActivity extends AppCompatActivity{
             if (!maxCapacity(pax, selectedDate, selectedTime)) {
                 Reservation reservation = new Reservation(pax);
 
-                mDatabase.child("Reservations").child(selectedDate).child(selectedTime).child(name).setValue(reservation);
-                Toast.makeText(ReservationActivity.this, "Booking successful", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(ReservationActivity.this, MenuActivity.class);
-                startActivity(intent);
+                    mDatabase.child("Reservations").child(selectedDate).child(selectedTime).child(name).setValue(reservation);
+                    Toast.makeText(ReservationActivity.this, "Booking successful", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(ReservationActivity.this, MenuActivity.class);
+                    startActivity(intent);
+
             } else {
                 Toast.makeText(ReservationActivity.this, "Selected time is fully booked, please select a different time.", Toast.LENGTH_LONG).show();
                 updateCapacity(selectedDate, selectedTime);

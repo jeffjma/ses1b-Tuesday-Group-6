@@ -93,8 +93,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
         String emailAdd = email.getText().toString();
         String password = pass.getText().toString();
+        String first = firstName.getText().toString();
+        String second = lastName.getText().toString();
 
-        if(emailAdd.isEmpty() || password.isEmpty()) {
+        if(emailAdd.equals("") || password.equals("")) {
             Toast.makeText(this, "Please fill in all the fields", Toast.LENGTH_SHORT);
         }
         else {
